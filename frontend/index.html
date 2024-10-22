@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LurkForWork</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/global.css" />
+</head>
+<body>
+    <!-- This is an example app structure, you can modify this as much as you choose --> 
+    <header>
+        <h1>Qanda</h1>
+    </header>
+    
+    <main role="main">
+        <!-- register part --> 
+        <div class="register-container" id="registerFormContainer">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerName">Name:</label>
+                    <input type="text" id="registerName" name="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <div id="errorReg"></div>
+                <button type="submit" id="registerButton">Register</button>
+            </form>
+        </div>
+
+        <!-- login part --> 
+        <div class="login-container", id="TotalLoginForm">
+            <form id="loginForm" action="/auth/login" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+                <div id="errorLogin"></div>
+            </form>
+            <button id="showRegisterFormBtn">Register</button>
+        </div>
+        
+        <!-- backdrop used to improve user experience --> 
+        <div id="modalBackdrop" class="modal-backdrop"></div>
+
+        <!-- dashboard part --> 
+        <div id="dashboardContainer">
+
+            <!-- dashboard header --> 
+            <h2 id="dashboardHeader">Dashboard</h2>
+            <div id="createThreadContainer">
+                <button id="createThreadBtn">Create</button>
+            </div>
+            
+            <!-- dashboard content --> 
+            <div id="dashboardContent">
+                <div id="threadList">
+                    <div id="threadListContainer"></div>
+                    <button id="loadMoreThreads">More</button>
+                </div>
+
+                <!-- the part to show the details of a chosen thread --> 
+                <div id="singleThreadContainer">
+                    <h3>Title: <span id="singleThreadTitle"></span></h3>
+                    <p>Content: <span id="singleThreadContent"></span></p>
+                    <p><span id="singleThreadLikes"></span></p>
+
+                    <div class="buttons-row">
+                        <button id="editThreadBtn">Edit</button>
+                        <button id="deleteThreadBtn">Delete</button>
+                    </div>
+                    <div class="buttons-row">
+                        <button id="likeThreadBtn" class="like-btn">Like</button>
+                        <button id="watchThreadBtn">Watch</button>
+                    </div>
+
+                    <div id="commentsSection">
+                        <h4>Comments</h4>
+                        <!-- Comments will be appended here by JavaScript -->
+                        <div id="threadCommentDisplayArea"></div>
+                        <div id="newCommentArea">
+                            <textarea id="newCommentInput" placeholder="Write your comment..."></textarea>
+                            <button id="commentOnThisThread">Comment</button>
+                        </div>
+                        
+                      </div>
+                </div>
+
+                <!-- the popup modal that used to edit thread --> 
+                <div id="editThreadContainer" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span> 
+                        
+                        <div class="input-group" id="threadTitleInputGroup">
+                            <label for="threadTitleEdit">Title</label>
+                            <input type="text" id="threadTitleEdit" placeholder="Enter title" />
+                        </div>
+                
+                        <div class="input-group">
+                            <label for="threadContentEdit">Content</label>
+                            <textarea id="threadContentEdit" placeholder="Enter content"></textarea>
+                        </div>
+                
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="threadPublicEdit" /> Public</label>
+                            <label><input type="checkbox" id="threadLockEdit" /> Locked</label>
+                            
+                        </div>
+                        
+                        <div id="errorEditThread"></div>
+                        
+                        <button id="submitEdition">Save</button>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div id="editCommentContainer" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <textarea id="editCommentText"></textarea>
+                    <button id="saveEditedComment">Save</button>
+                </div>
+            </div>
+
+            <div id="profileButtonContainer">
+                <button id="userProfileButton">View Profile</button>
+            </div>
+            <!-- the popup modal that used to show and edit user profile --> 
+            <div id="userProfileModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeUserProfileModal" class="close">&times;</span>
+                    <h2>User Profile</h2>
+                    <p>ID: <span id="userID"></span></p>
+                    <p>Email: <span id="userEmail"></span></p>
+                    <p>Name: <span id="userName"></span></p>
+                    <img id="userProfileImage" src="" alt="Profile Image" style="width:100px;height:100px;">
+                    <p>Admin: <span id="userIsAdmin"></span></p>
+                    
+                    <!-- Edit Form -->
+                    <div id="editProfileDiv">
+                        <input type="email" id="editEmail" placeholder="New Email">
+                        <input type="password" id="editPassword" placeholder="New Password">
+                        <input type="text" id="editName" placeholder="New Name">
+                        <input type="file" id="editImage">
+                        <div id="errorUpdateProfile"></div>
+                        <button id="submitEditProfile">Update Profile</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- logout button --> 
+            <div id="logoutButtonContainer">
+                <button id="logoutButton">Logout</button>
+            </div>
+            
+        </div>
+
+
+        <!-- the popup modal that used to create thread --> 
+        <div id="createThreadScreen" class="modal2">
+            <div class="modal-content2">
+                <span class="close-button2">&times;</span>
+                    <form id="createThreadForm">
+                        <div class="form-group">
+                            <label for="threadTitle">Title:</label>
+                            <input type="text" id="threadTitle" name="threadTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="threadContent">Content:</label>
+                            <textarea id="threadContent" name="threadContent" required></textarea>
+                        </div>
+                        <div class="form-group2">
+                            
+                            <label for="threadPublic">Public:</label>
+                            <input type="checkbox" id="threadPublic" name="threadPublic"> 
+                            
+                        </div>
+                        <div id="errorCreate"></div>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+        </div>
+
+
+    </main>
+    <footer>
+        <p></p>
+    </footer>
+    <!-- error modal popup part --> 
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
